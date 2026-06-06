@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #fcfbfa;
+    color: #000000;
+    font-family: 'Helvetica Neue', Helvetica, Inter, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* Paper texture effect using SVG background */
+  .paper-bg {
+    background-color: #fcfbfa;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+}
+
+/* Custom Swiss Layout Utilities */
+.swiss-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0px;
+}
+
+.swiss-border {
+  border: 1px solid #000000;
+}
+
+.swiss-border-t {
+  border-top: 1px solid #000000;
+}
+
+.swiss-border-b {
+  border-bottom: 1px solid #000000;
+}
+
+.swiss-border-l {
+  border-left: 1px solid #000000;
+}
+
+.swiss-border-r {
+  border-right: 1px solid #000000;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #fcfbfa;
+  border-left: 1px solid #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e62217;
+}
+
+/* Focus styling */
+*:focus-visible {
+  outline: 2px solid #e62217;
+  outline-offset: 2px;
+}
