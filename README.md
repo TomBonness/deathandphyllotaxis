@@ -1,6 +1,6 @@
 # 🌻 Death & Phyllotaxis: The Golden Angle Packer
 
-> **Experiment No. 04 / A Swiss Modernist exploration of biological optimization.**
+> **Experiment No. 04 / An interactive exploration of biological optimization.**
 
 Why aren't sunflowers stupid? 
 
@@ -42,12 +42,3 @@ Because $1$ is the smallest integer, this sequence converges as slowly as mathem
 - **Dynamic Continued Fraction Chip-set**: Displays the active angle's continued fraction expansion dynamically, highlighting how large terms in the expansion correspond to visible alignments and gaps.
 - **Space Utilization Diagnostic**: Explains the biological impact of the chosen angle in plain terms (e.g., *“Severe clumping: 135° stacks seeds along 8 spokes, leaving 88% of the surface area empty.”*).
 
----
-
-## Swiss Modernist Aesthetics
-
-Following the Josef Müller-Brockmann school of Swiss design:
-- **Off-white paper background** (`#fcfbfa`) and **pure black lines** (`#000000`).
-- Bright **Swiss Red** (`#e62217`) as the single functional accent color.
-- A strict asymmetrical grid separated by clean, thin borders.
-- Minimalist typography hierarchy using Inter and JetBrains Mono.
