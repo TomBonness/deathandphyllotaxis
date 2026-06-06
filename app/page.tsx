@@ -39,7 +39,6 @@ export default function Home() {
   const [seedCount, setSeedCount] = useState(800);
   const [scaleMultiplier, setScaleMultiplier] = useState(1.0);
   const [seedSize, setSeedSize] = useState(4);
-  const [highlightedSpiral, setHighlightedSpiral] = useState<number | null>(null);
   
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(0.002); // degrees per frame
@@ -83,7 +82,7 @@ export default function Home() {
       <header className="col-span-12 p-6 swiss-border-b bg-swiss-black text-swiss-paper grid grid-cols-1 md:grid-cols-12 items-center gap-4">
         <div className="md:col-span-8">
           <div className="text-xs uppercase tracking-widest font-mono text-swiss-lightgrey/60 mb-2">
-            Swiss Modernism Series / Poster 04
+            Experiment No. 04
           </div>
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none m-0">
             Phyllotaxis
@@ -328,7 +327,6 @@ export default function Home() {
             seedCount={seedCount}
             scaleMultiplier={scaleMultiplier}
             seedSize={seedSize}
-            highlightedSpiral={highlightedSpiral}
             onHoverSeed={setHoveredSeed}
           />
         </div>
@@ -366,8 +364,6 @@ export default function Home() {
       <div className="col-span-12 lg:col-span-3 flex flex-col bg-swiss-paper">
         <MathPanel
           angle={angle}
-          highlightedSpiral={highlightedSpiral}
-          setHighlightedSpiral={setHighlightedSpiral}
         />
       </div>
 

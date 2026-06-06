@@ -13,7 +13,6 @@ interface PhyllotaxisCanvasProps {
   seedCount: number;
   scaleMultiplier: number;
   seedSize: number;
-  highlightedSpiral: number | null;
   onHoverSeed?: (seed: { index: number; r: number; theta: number } | null) => void;
 }
 
@@ -22,7 +21,6 @@ export default function PhyllotaxisCanvas({
   seedCount,
   scaleMultiplier,
   seedSize,
-  highlightedSpiral,
   onHoverSeed,
 }: PhyllotaxisCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -88,7 +86,6 @@ export default function PhyllotaxisCanvas({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set high-DPI scaling
     const dpr = window.devicePixelRatio || 1;
     canvas.width = dimensions.width * dpr;
     canvas.height = dimensions.height * dpr;
@@ -109,32 +106,9 @@ export default function PhyllotaxisCanvas({
       ctx.stroke();
     }
 
-    // Draw spiral lines first (behind seeds)
-    if (highlightedSpiral !== null && highlightedSpiral > 0 && seeds.length > 0) {
-      ctx.strokeStyle = '#e62217'; // Swiss Red
-      ctx.lineWidth = 1.5;
-      
-      const q = highlightedSpiral;
-      // There are q spiral families. For each family index i from 0 to q-1
-      for (let i = 0; i < q; i++) {
-        ctx.beginPath();
-        let first = true;
-        for (let n = i; n < seeds.length; n += q) {
-          const seed = seeds[n];
-          if (first) {
-            ctx.moveTo(seed.x, seed.y);
-            first = false;
-          } else {
-            ctx.lineTo(seed.x, seed.y);
-          }
-        }
-        ctx.stroke();
-      }
-    }
 
     // Draw seeds
     seeds.forEach((seed) => {
-      const isHighlighted = highlightedSpiral !== null && seed.index % highlightedSpiral === 0;
       const isHovered = hoveredSeed && hoveredSeed.index === seed.index;
 
       ctx.beginPath();
@@ -147,9 +121,6 @@ export default function PhyllotaxisCanvas({
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 1.5;
         ctx.stroke();
-      } else if (isHighlighted) {
-        ctx.fillStyle = '#e62217'; // Highlighted family in red
-        ctx.fill();
       } else {
         ctx.fillStyle = '#000000'; // Default seeds in black
         ctx.fill();
@@ -162,7 +133,7 @@ export default function PhyllotaxisCanvas({
     ctx.fillStyle = '#e62217';
     ctx.fill();
 
-  }, [dimensions, seeds, seedSize, highlightedSpiral, hoveredSeed]);
+  }, [dimensions, seeds, seedSize, hoveredSeed]);
 
   // Handle mouse moves to detect hovered seed
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {

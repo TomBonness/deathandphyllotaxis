@@ -3,37 +3,36 @@ import {
   getContinuedFraction, 
   getConvergents, 
   getDivergenceRatio,
+  calculatePackingEfficiency,
+  getSpaceUtilizationFeedback,
   FIBONACCI_NUMBERS 
 } from '../utils/math';
 
 interface MathPanelProps {
   angle: number;
-  highlightedSpiral: number | null;
-  setHighlightedSpiral: (q: number | null) => void;
 }
 
-export default function MathPanel({
-  angle,
-  highlightedSpiral,
-  setHighlightedSpiral,
-}: MathPanelProps) {
+export default function MathPanel({ angle }: MathPanelProps) {
   const ratio = getDivergenceRatio(angle);
   const terms = getContinuedFraction(ratio, 8);
   const convergents = getConvergents(terms);
+
+  const efficiency = calculatePackingEfficiency(angle);
+  const feedback = getSpaceUtilizationFeedback(angle, efficiency, convergents);
 
   // Check if a number is Fibonacci
   const isFibonacci = (n: number) => FIBONACCI_NUMBERS.includes(n);
 
   return (
-    <div className="flex flex-col h-full bg-swiss-paper text-swiss-black font-sans">
+    <div className="flex flex-col h-full bg-swiss-paper text-swiss-black font-sans divide-y divide-swiss-black">
       {/* Title */}
-      <div className="p-6 swiss-border-b bg-swiss-black text-swiss-paper">
-        <div className="text-xs uppercase tracking-widest font-mono mb-1 text-swiss-lightgrey/60">Section 02</div>
+      <div className="p-6 bg-swiss-black text-swiss-paper">
+        <div className="text-xs uppercase tracking-widest font-mono mb-1 text-swiss-lightgrey/60">Section 03</div>
         <h2 className="text-2xl font-black uppercase tracking-tight">Mathematical Panel</h2>
       </div>
 
       {/* Angle Stats */}
-      <div className="p-6 swiss-border-b flex flex-col justify-between">
+      <div className="p-6 flex flex-col justify-between">
         <div>
           <span className="text-xs uppercase font-mono tracking-wider text-swiss-grey block mb-1">Divergence Angle</span>
           <div className="text-5xl font-black tracking-tighter text-swiss-black">
@@ -53,8 +52,35 @@ export default function MathPanel({
         </div>
       </div>
 
+      {/* Real-Time Packing Efficiency Analyzer */}
+      <div className="p-6">
+        <span className="text-xs uppercase font-mono tracking-wider text-swiss-grey block mb-1">Packing Efficiency</span>
+        <div className="flex items-baseline justify-between mb-2">
+          <div className="text-4xl font-black text-swiss-red">
+            {efficiency}%
+          </div>
+          <span className="text-xs font-mono uppercase text-swiss-grey">
+            {efficiency >= 90 ? 'Optimal' : efficiency >= 70 ? 'High' : efficiency >= 35 ? 'Moderate' : 'Poor'}
+          </span>
+        </div>
+        
+        {/* Progress bar in Swiss poster style */}
+        <div className="w-full h-4 bg-swiss-lightgrey border border-swiss-black relative overflow-hidden mb-4">
+          <div 
+            className="h-full bg-swiss-red border-r border-swiss-black transition-all duration-300"
+            style={{ width: `${efficiency}%` }}
+          />
+        </div>
+
+        {/* Textual Space Utilization Analysis */}
+        <div className="bg-swiss-lightgrey/30 border border-swiss-black/15 p-4 text-xs leading-relaxed text-swiss-grey font-mono">
+          <span className="text-swiss-black font-bold uppercase block mb-1">Space Utilization Analysis:</span>
+          {feedback}
+        </div>
+      </div>
+
       {/* Continued Fraction */}
-      <div className="p-6 swiss-border-b flex-1 overflow-y-auto">
+      <div className="p-6">
         <span className="text-xs uppercase font-mono tracking-wider text-swiss-grey block mb-3">Continued Fraction</span>
         <div className="flex items-center flex-wrap gap-1 mb-4 font-mono">
           <span className="text-swiss-grey text-sm">[0;</span>
@@ -93,65 +119,45 @@ export default function MathPanel({
         </div>
       </div>
 
-      {/* Convergents & Spiral highlight */}
+      {/* Convergents explanation */}
       <div className="p-6 bg-swiss-lightgrey/30">
         <span className="text-xs uppercase font-mono tracking-wider text-swiss-grey block mb-3">
-          Parastichy Families (Spirals)
+          Rational Convergents
         </span>
-        <p className="text-xs text-swiss-grey mb-4 leading-relaxed">
-          The denominators <span className="font-mono text-swiss-black font-bold">q</span> of the rational approximations represent the number of visible spiral families. Click a family below to highlight its arms on the canvas:
+        <p className="text-xs text-swiss-grey mb-4 leading-relaxed font-sans">
+          The denominators <span className="font-mono text-swiss-black font-bold">q</span> of the rational approximations represent the number of spokes or spiral families that mathematically form in the pattern:
         </p>
 
         <div className="grid grid-cols-2 gap-2">
-          {convergents.slice(0, 6).map((c, idx) => {
-            const active = highlightedSpiral === c.q;
+          {convergents.slice(0, 4).map((c, idx) => {
             const isFib = isFibonacci(c.q);
             return (
-              <button
+              <div
                 key={idx}
-                onClick={() => setHighlightedSpiral(active ? null : c.q)}
-                className={`p-3 text-left border flex flex-col justify-between transition-all ${
-                  active
-                    ? 'bg-swiss-red border-swiss-red text-white'
-                    : 'bg-swiss-paper border-swiss-black hover:bg-swiss-lightgrey/60 text-swiss-black'
-                }`}
+                className="p-3 border border-swiss-black bg-swiss-paper text-swiss-black flex flex-col justify-between"
               >
                 <div className="flex justify-between items-start w-full">
-                  <span className="font-mono text-[10px] uppercase opacity-75">
-                    Family {idx + 1}
+                  <span className="font-mono text-[9px] uppercase opacity-75">
+                    Order {idx + 1}
                   </span>
                   {isFib && (
-                    <span className={`text-[8px] font-bold tracking-widest px-1 font-mono uppercase ${
-                      active ? 'bg-white text-swiss-red' : 'bg-swiss-red text-white'
-                    }`}>
+                    <span className="text-[8px] font-bold tracking-widest px-1 font-mono uppercase bg-swiss-red text-white">
                       FIB
                     </span>
                   )}
                 </div>
                 <div className="mt-2 flex items-baseline justify-between w-full">
-                  <span className="text-2xl font-black font-mono leading-none">
+                  <span className="text-xl font-black font-mono leading-none">
                     {c.q}
                   </span>
                   <span className="font-mono text-xs opacity-75">
                     {c.p}/{c.q}
                   </span>
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>
-
-        {highlightedSpiral && (
-          <div className="mt-4 flex justify-between items-center bg-swiss-black text-swiss-paper p-3 text-xs">
-            <span className="font-mono">Highlighting family: {highlightedSpiral}</span>
-            <button 
-              onClick={() => setHighlightedSpiral(null)}
-              className="text-[10px] uppercase font-mono underline hover:text-swiss-red"
-            >
-              Clear
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
